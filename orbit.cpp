@@ -1,10 +1,9 @@
-//modify: Alexander Nguyen
-//
-//author: Gordon Griesel
-//date: Feb 20, 2018
-//simulation of orbital physics
-//
-//
+//Programmer: Alexander Nguyen
+//Professor: Gordon Griesel
+//Course: CMPS 4490 - Game Design
+//Spring 2018
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
