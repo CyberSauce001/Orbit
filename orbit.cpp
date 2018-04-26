@@ -146,12 +146,13 @@ public:
 		orb3.setVel(0.0, 0.17);
 
 		planet2.init(40, 80, 200, 600, 0);//bottom
-        	porb1.init(20,10,200,500,8);
-		porb1.setVel(0.1,0.0);
 	
 	
 		planet3.init(20, 40, 600, 200, 0);//top
+		porb.init(20,20,600,100,8);
+		porb.setVel(0.03,0.01);
 	
+
 	//-------------------------------------------------------------------
 		satellite.init(10, 6, 200, 400, 4);
 		satellite.setVel(0.2, 0.02);
@@ -603,9 +604,8 @@ void show_circle(Circle *c)
 	    x11.set_color_3i(204,0,255);		
     if(c->index == 7)
 	    x11.set_color_3i(153,38,0);		
-
-
-
+    if(c->index == 8)
+	    x11.set_color_3i(255,255,255);		
 
     for (int i = 0; i < c->nverts; i++) {
 		int j = i+1;
@@ -662,6 +662,19 @@ void physics()
         g.orb3.vel[1] += (norm[1]*(m1*m2/(dist*dist))/10000)/m1;
         g.planet.vel[0] -= (norm[0]*(m1*m2/(dist*dist))/10000)/m2;
         g.planet.vel[1] -= (norm[1]*(m1*m2/(dist*dist))/10000)/m2;
+  
+	//porb top planet - 
+	m1=(4/3)*PI*(g.porb.radius*g.porb.radius);
+        m2=(4/3)*PI*(g.planet3.radius * g.planet3.radius);
+        norm[0]=g.planet3.pos[0]-g.porb.pos[0];
+        norm[1]=g.planet3.pos[1]-g.porb.pos[1];
+        dist = sqrt((norm[0]*norm[0])+(norm[1]*norm[1]));
+        norm[0]/=dist;
+        norm[1]/=dist;
+        g.porb.vel[0] += (norm[0]*(m1*m2/(dist*dist))/50000)/m1;
+        g.porb.vel[1] += (norm[1]*(m1*m2/(dist*dist))/50000)/m1;
+        g.planet3.vel[0] -= (norm[0]*(m1*m2/(dist*dist))/10000000000)/m2;
+        g.planet3.vel[1] -= (norm[1]*(m1*m2/(dist*dist))/10000000000)/m2;
   	
 //--------------------------------------------------------------
 	//Bullet 5 - teal 
@@ -718,6 +731,8 @@ void physics()
         g.trail[4][g.pos][1]=g.bul6.pos[1];
   	g.trail[5][g.pos][0]=g.bul7.pos[0];
         g.trail[5][g.pos][1]=g.bul7.pos[1];
+   	g.trail[6][g.pos][0]=g.porb.pos[0];
+        g.trail[6][g.pos][1]=g.porb.pos[1];
    
 	g.pos--;
             if(g.pos < 0) {
@@ -767,12 +782,13 @@ void physics()
 //***************************************************************************
 //***************************************************************************
             g.planet.move();
-            g.planet2.move();
-            g.planet3.move();
-	    g.orb1.move();
+     	    g.orb1.move();
 	    g.orb2.move();
 	    g.orb3.move();
-	
+	    g.planet2.move();
+            g.planet3.move();
+	    g.porb.move();
+
 }
 
 void render()
@@ -783,6 +799,7 @@ void render()
     
     Flt r1,gr1,b1,r2,gr2,b2,r3,gr3,b3,ic;
     Flt a1,a2,a3,ba1,ba2,ba3,c1,c2,c3, mod;
+    Flt p1,p2,p3;
     mod= 800 /g.mod;
     int first = 0;
     int loop = g.pos + 1;
@@ -796,14 +813,17 @@ void render()
     myBresenhamLine(g.orb2.pos[0],g.orb2.pos[1],g.trail[1][loop][0],g.trail[1][loop][1]);
     x11.set_color_3i(180,100,180);
     myBresenhamLine(g.orb3.pos[0],g.orb3.pos[1],g.trail[2][loop][0],g.trail[2][loop][1]);
-     
+   //----------------------------------------------------------------------  
     x11.set_color_3i(210,150,100);
     myBresenhamLine(g.bul5.pos[0],g.bul5.pos[1],g.trail[3][loop][0],g.trail[3][loop][1]);
     x11.set_color_3i(255,255,255);
     myBresenhamLine(g.bul6.pos[0],g.bul6.pos[1],g.trail[4][loop][0],g.trail[4][loop][1]);
     x11.set_color_3i(64,224,208);
     myBresenhamLine(g.bul7.pos[0],g.bul7.pos[1],g.trail[5][loop][0],g.trail[5][loop][1]);
-    
+    //----------------------------------------------------------------------
+    x11.set_color_3i(177,24,108);
+    myBresenhamLine(g.porb.pos[0],g.porb.pos[1],g.trail[6][loop][0],g.trail[6][loop][1]);
+ 
     for(int i = g.size-1; i > 60/g.mod; i--){
         int tempi = i+g.pos;
         int templ = (i+1)+g.pos;
@@ -845,21 +865,26 @@ void render()
 	c2=224*(1/ic);
 	c3=208*(1/ic);
 	
+	p1=177*(1/ic);
+	p2=24*(1/ic);
+	p3=108*(1/ic);
+//------------------------------------------------------------------	
         x11.set_color_3i(r1,gr1,b1);
         x11.drawPoint(g.trail[0][tempi][0],g.trail[0][tempi][1]);
-        
         x11.set_color_3i(r2,gr2,b2);
         x11.drawPoint(g.trail[1][tempi][0],g.trail[1][tempi][1]);
-        
         x11.set_color_3i(r3,gr3,b3);
         x11.drawPoint(g.trail[2][tempi][0],g.trail[2][tempi][1]);
-       
+//-------------------------------------------------------------------       
 	x11.set_color_3i(a1,a2,a3);
         x11.drawPoint(g.trail[3][tempi][0],g.trail[3][tempi][1]);
 	x11.set_color_3i(ba1,ba2,ba3);
         x11.drawPoint(g.trail[4][tempi][0],g.trail[4][tempi][1]);
 	x11.set_color_3i(c1,c2,c3);
         x11.drawPoint(g.trail[5][tempi][0],g.trail[5][tempi][1]);
+//-------------------------------------------------------------------
+	x11.set_color_3i(p1,p2,p3);
+        x11.drawPoint(g.trail[6][tempi][0],g.trail[6][tempi][1]);
 
 
         
@@ -871,7 +896,12 @@ void render()
                 myBresenhamLine(g.trail[1][templ][0],g.trail[1][templ][1],g.trail[1][tempi][0],g.trail[1][tempi][1]);
                 x11.set_color_3i(r3,gr3,b3);
                 myBresenhamLine(g.trail[2][templ][0],g.trail[2][templ][1],g.trail[2][tempi][0],g.trail[2][tempi][1]);
-           	    }
+//--------------------------------------------------------------------------
+    	        x11.set_color_3i(p1,p2,p3);
+                myBresenhamLine(g.trail[6][templ][0],g.trail[6][templ][1],g.trail[6][tempi][0],g.trail[6][tempi][1]);
+//------
+        
+		}
     	}
     	if(first&&g.mod>150){
             if(g.trail[0][templ][0]!=0&&g.trail[0][templ][1]!=0){
@@ -886,14 +916,17 @@ void render()
     	}
     	first=1;
     }
-	show_circle(&g.planet);
 	show_circle(&g.planet2);
-	show_circle(&g.planet3);
 	show_circle(&g.satellite);
+//--------------------------------------------------------------------------
+	show_circle(&g.planet);
 	show_circle(&g.orb1);
 	show_circle(&g.orb2);
 	show_circle(&g.orb3);
-	
+//--------------------------------------------------------------------------
+	show_circle(&g.planet3);
+	show_circle(&g.porb);
+//------------------------------------------------------------------------
 	show_circle(&g.bul5);
 	if(g.bul5.pos[0] < (float)g.xres && g.bul5.pos[1] > 0.0)
 		show_circle(&g.mark1);
