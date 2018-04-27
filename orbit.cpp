@@ -102,6 +102,7 @@ public:
  	Circle orb1, orb2,orb3, bul5, bul6, bul7;
 	Circle mark1,mark2,mark3;
 	Circle porb;
+	Circle troll;
    	 int pos, count, mod, size, length;
     	Flt trail[10][1000][2];
 	char keys[65536];
@@ -779,7 +780,17 @@ void physics()
 		g.bul7.accel();
 	
 	}
+
 //***************************************************************************
+	  	norm[0]=g.planet.pos[0]-g.planet3.pos[0];
+        	norm[1]=g.planet.pos[1]-g.planet3.pos[1];
+        	dist = sqrt((norm[0]*norm[0])+(norm[1]*norm[1]));
+		if(g.keys[XK_space])
+		printf(" %lf\n",dist);
+	if (dist <= 120) {
+    		g.planet3.vel[0] = 0.5;
+    		g.planet3.vel[1] = 0.5;
+	}
 //***************************************************************************
             g.planet.move();
      	    g.orb1.move();

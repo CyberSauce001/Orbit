@@ -4,10 +4,15 @@ by Alexander Nguyen
 Game Project for CMPS 4490 - Game Design
 
 Step #1: git clone https://github.com/Ethereal15/Orbit on your Linux 
+<br>
 Step #2 Have all the necessary package
+<br>
 Step #3 make
+<br>
 Step #4 ./orbit
+<br>
 Step #5 Play,   Button 1-3 above next to tilda (~) shoots an orb at the planet
+<br>
 
 Init Goal (Complete):
 The orb is shot at the planet which will force the planet to move due to the gravity influence on the orb and goal is to knock the other two planets. You can only move a certain range up and down direction, and only have 3 chances. 
