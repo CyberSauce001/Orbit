@@ -23,6 +23,7 @@
 typedef float Flt;
 typedef float Vec[3];
 const int N_CIRCLE_SEGMENTS = 24;
+
 //
 #define PI 3.14159265358979
 #define SWAP(x,y) (x)^=(y);(y)^=(x);(x)^=(y)
@@ -785,12 +786,21 @@ void physics()
 	  	norm[0]=g.planet.pos[0]-g.planet3.pos[0];
         	norm[1]=g.planet.pos[1]-g.planet3.pos[1];
         	dist = sqrt((norm[0]*norm[0])+(norm[1]*norm[1]));
+		Vec col;
+		Flt apart;
+		col[0]= g.planet3.pos[0]-g.planet2.pos[0];
+		col[1]= g.planet3.pos[1]-g.planet2.pos[1];
+        	apart = sqrt((col[0]*col[0])+(col[1]*col[1]));
+		if (apart <= 110) {
+		    g.planet2.vel[0] = 0.05;
+		    g.planet2.vel[1] = 0.05;
+		}
 		if(g.keys[XK_space])
-		printf(" %lf\n",dist);
-	if (dist <= 120) {
-    		g.planet3.vel[0] = 0.5;
-    		g.planet3.vel[1] = 0.5;
-	}
+		printf(" %lf\n",apart);
+		if (dist <= 120) {
+    		g.planet3.vel[0] -= 0.05;
+    		g.planet3.vel[1] += 0.05;
+		}
 //***************************************************************************
             g.planet.move();
      	    g.orb1.move();
