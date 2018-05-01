@@ -626,7 +626,7 @@ void physics()
         Vec norm;
         Flt dist;
         Flt m1, m2;
-        //Orb 1 - Red
+        //Orb 1 - Red trail
         m1=(4/3)*PI*(g.orb1.radius * g.orb1.radius);
         m2=(4/3)*PI*(g.planet.radius * g.planet.radius);
         norm[0]=g.planet.pos[0]-g.orb1.pos[0];
@@ -639,7 +639,7 @@ void physics()
         g.planet.vel[0] -= (norm[0]*(m1*m2/(dist*dist))/10000)/m2;
         g.planet.vel[1] -= (norm[1]*(m1*m2/(dist*dist))/10000)/m2;
         
-        //Orb 2 -Blue    
+        //Orb 2 -Blue trail   
         m1=(4/3)*PI*(g.orb2.radius*g.orb2.radius);
         m2=(4/3)*PI*(g.planet.radius * g.planet.radius);
         norm[0]=g.planet.pos[0]-g.orb2.pos[0];
@@ -652,7 +652,7 @@ void physics()
         g.planet.vel[0] -= (norm[0]*(m1*m2/(dist*dist))/10000)/m2;
         g.planet.vel[1] -= (norm[1]*(m1*m2/(dist*dist))/10000)/m2;
         
-        //Orb 3 - Pink
+        //Orb 3 - Pink trail
         m1=(4/3)*PI*(g.orb3.radius*g.orb3.radius);
         m2=(4/3)*PI*(g.planet.radius * g.planet.radius);
         norm[0]=g.planet.pos[0]-g.orb3.pos[0];
@@ -664,7 +664,9 @@ void physics()
         g.orb3.vel[1] += (norm[1]*(m1*m2/(dist*dist))/10000)/m1;
         g.planet.vel[0] -= (norm[0]*(m1*m2/(dist*dist))/10000)/m2;
         g.planet.vel[1] -= (norm[1]*(m1*m2/(dist*dist))/10000)/m2;
-  
+ 
+	
+	 
 	//porb top planet - 
 	m1=(4/3)*PI*(g.porb.radius*g.porb.radius);
         m2=(4/3)*PI*(g.planet3.radius * g.planet3.radius);
@@ -791,17 +793,114 @@ void physics()
 		col[0]= g.planet3.pos[0]-g.planet2.pos[0];
 		col[1]= g.planet3.pos[1]-g.planet2.pos[1];
         	apart = sqrt((col[0]*col[0])+(col[1]*col[1]));
+		Vec col2;
+		Flt apt;
+		col2[0]= g.planet.pos[0]-g.planet2.pos[0];
+		col2[1]= g.planet.pos[1]-g.planet2.pos[1];
+        	apt = sqrt((col2[0]*col2[0])+(col2[1]*col2[1]));
+
 		if (apart <= 110) {
 		    g.planet2.vel[0] = 0.05;
 		    g.planet2.vel[1] = 0.05;
 		}
-		if(g.keys[XK_space])
-		printf(" %lf\n",apart);
-		if (dist <= 120) {
-    		g.planet3.vel[0] -= 0.05;
-    		g.planet3.vel[1] += 0.05;
+		if (apt <= 156) {
+		    g.planet2.vel[0] = 0.05;
+		    g.planet2.vel[1] = 0.05;
+		}
+		if (dist <= 118) {
+    			g.planet3.vel[0] -= 0.05;
+    			g.planet3.vel[1] += 0.05;
 		}
 //***************************************************************************
+		Vec o1,o2,o3;
+		Flt c1,c2,c3;
+		o1[0]=g.bul5.pos[0]-g.orb1.pos[0];
+        	o1[1]=g.bul5.pos[1]-g.orb1.pos[1];
+        	o2[0]=g.bul5.pos[0]-g.orb2.pos[0];
+        	o2[1]=g.bul5.pos[1]-g.orb2.pos[1];
+		o3[0]=g.bul5.pos[0]-g.orb3.pos[0];
+        	o3[1]=g.bul5.pos[1]-g.orb3.pos[1];
+		c1 = sqrt((o1[0]*o1[0])+(o1[1]*o1[1]));
+		c2 = sqrt((o2[0]*o2[0])+(o2[1]*o2[1]));
+		c3 = sqrt((o3[0]*o3[0])+(o3[1]*o3[1]));
+		
+		if (c1 < 6.5 && c1 > 5.4 ){
+		   g.bul5.vel[0] *= -50; 
+		   g.bul5.vel[1] *= 30; 
+		}
+		
+		if(c2 < 11.6 && c2 > 11.1){
+		   g.bul5.vel[0] *= 50; 
+		   g.bul5.vel[1] *= -70; 
+		}
+		if(c3 < 13.9 && c3 > 13.3) {
+		   g.bul5.vel[0] *= 90; 
+		   g.bul5.vel[1] *= 90; 
+		}
+//**************************************************************************
+		Vec o4,o5,o6;
+		Flt c4,c5,c6;
+		o4[0]=g.bul6.pos[0]-g.orb1.pos[0];
+        	o4[1]=g.bul6.pos[1]-g.orb1.pos[1];
+        	o5[0]=g.bul6.pos[0]-g.orb2.pos[0];
+        	o5[1]=g.bul6.pos[1]-g.orb2.pos[1];
+		o6[0]=g.bul6.pos[0]-g.orb3.pos[0];
+        	o6[1]=g.bul6.pos[1]-g.orb3.pos[1];
+		c4 = sqrt((o4[0]*o4[0])+(o4[1]*o4[1]));
+		c5 = sqrt((o5[0]*o5[0])+(o5[1]*o5[1]));
+		c6 = sqrt((o6[0]*o6[0])+(o6[1]*o6[1]));
+		
+		if (c4 < 10.5 && c4 > 10.1 ){
+		   g.bul6.vel[0] *= -50; 
+		   g.bul6.vel[1] *= 30; 
+		}
+		
+		if(c5 < 13.6 && c5 > 13.1){
+		   g.bul6.vel[0] *= 50; 
+		   g.bul6.vel[1] *= -70; 
+		}
+		if(c6 < 14.4 && c6 > 13.8) {
+		   g.bul6.vel[0] *= 90; 
+		   g.bul6.vel[1] *= 90; 
+		}
+
+//*****************************************************************************
+		Vec o7,o8,o9;
+		Flt c7,c8,c9;
+		o7[0]=g.bul7.pos[0]-g.orb1.pos[0];
+        	o7[1]=g.bul7.pos[1]-g.orb1.pos[1];
+        	o8[0]=g.bul7.pos[0]-g.orb2.pos[0];
+        	o8[1]=g.bul7.pos[1]-g.orb2.pos[1];
+		o9[0]=g.bul7.pos[0]-g.orb3.pos[0];
+        	o9[1]=g.bul7.pos[1]-g.orb3.pos[1];
+		c7 = sqrt((o7[0]*o7[0])+(o7[1]*o7[1]));
+		c8 = sqrt((o8[0]*o8[0])+(o8[1]*o8[1]));
+		c9 = sqrt((o9[0]*o9[0])+(o9[1]*o9[1]));
+		
+		if (c7 < 14.1 && c7 > 13.5 ){
+		   g.bul7.vel[0] *= -5; 
+		   g.bul7.vel[1] *= 3; 
+		}
+		
+		if(c8 < 14.0 && c8 > 13.4){
+		   g.bul7.vel[0] *= 50; 
+		   g.bul7.vel[1] *= -70; 
+		}
+		if(c9 < 16.4 && c9 > 15.8) {
+		   g.bul7.vel[0] *= 90; 
+		   g.bul7.vel[1] *= 90; 
+		}
+
+	
+
+		if(g.keys[XK_space]){
+
+		   printf("\nc1: %lf:", c9);
+
+	}
+
+
+//**************************************************************************
             g.planet.move();
      	    g.orb1.move();
 	    g.orb2.move();
@@ -842,7 +941,7 @@ void render()
     x11.set_color_3i(64,224,208);
     myBresenhamLine(g.bul7.pos[0],g.bul7.pos[1],g.trail[5][loop][0],g.trail[5][loop][1]);
     //----------------------------------------------------------------------
-    x11.set_color_3i(177,24,108);
+    x11.set_color_3i(255,255,250);
     myBresenhamLine(g.porb.pos[0],g.porb.pos[1],g.trail[6][loop][0],g.trail[6][loop][1]);
  
     for(int i = g.size-1; i > 60/g.mod; i--){
@@ -886,9 +985,9 @@ void render()
 	c2=224*(1/ic);
 	c3=208*(1/ic);
 	
-	p1=177*(1/ic);
-	p2=24*(1/ic);
-	p3=108*(1/ic);
+	p1=255*(1/ic);
+	p2=255*(1/ic);
+	p3=250*(1/ic);
 //------------------------------------------------------------------	
         x11.set_color_3i(r1,gr1,b1);
         x11.drawPoint(g.trail[0][tempi][0],g.trail[0][tempi][1]);
