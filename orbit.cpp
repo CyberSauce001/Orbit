@@ -459,6 +459,9 @@ int check_keys(XEvent *e)
 		    unitTest_normalize();
 		    break;
 		#endif
+		case XK_g:
+			g.bul5.init(30, 40, g.satellite.pos[0], g.satellite.pos[1], 5);
+			break;
 		case XK_Up:
 		    	g.toggle = false;
 			break;
