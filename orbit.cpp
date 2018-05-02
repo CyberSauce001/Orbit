@@ -97,6 +97,7 @@ public:
 
 class Global {
 public:
+	bool toggle;
 	int xres, yres;
 	Circle planet, planet2, planet3;
 	Circle satellite;
@@ -108,6 +109,7 @@ public:
     	Flt trail[10][1000][2];
 	char keys[65536];
 	Global() {
+	    	toggle = true;
 		xres = 1400, yres = 800;
 		memset(keys, 0, 65536);
 		mod = 150; 
@@ -458,8 +460,10 @@ int check_keys(XEvent *e)
 		    break;
 		#endif
 		case XK_Up:
+		    	g.toggle = false;
 			break;
 		case XK_Down:
+			g.toggle = true;
 			break;
 		case XK_Left:
 			g.satellite.pos[1] -=10;
@@ -913,10 +917,10 @@ void physics()
 
 void render()
 {
-
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    x11.clear_screen();
-    
+    if (g.toggle) {
+    	x11.clear_screen();
+    }
     Flt r1,gr1,b1,r2,gr2,b2,r3,gr3,b3,ic;
     Flt a1,a2,a3,ba1,ba2,ba3,c1,c2,c3, mod;
     Flt p1,p2,p3;
