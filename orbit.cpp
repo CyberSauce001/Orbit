@@ -908,8 +908,10 @@ void physics()
 
 	}
 		Vec in,in2,in3;
-		Flt disappear,disaappear2,disappear3, mass1, mass2,mass3,dark;
+		Flt disappear,disappear2,disappear3, mass1, mass2,mass3,dark;
 		mass1=(4/3)*PI*(g.bul5.radius*g.bul5.radius);
+		mass2=(4/3)*PI*(g.bul6.radius*g.bul6.radius);
+		mass3=(4/3)*PI*(g.bul7.radius*g.bul7.radius);
         	dark=(4/3)*PI*(g.blackhole.radius * g.planet.radius);
 
 		in[0] = g.blackhole.pos[0]-g.bul5.pos[0];
@@ -919,12 +921,29 @@ void physics()
 	        in2[1]= g.blackhole.pos[1]-g.bul6.pos[1];
 	        in3[1] = g.blackhole.pos[1]-g.bul7.pos[1];
         	disappear = sqrt((in[0]*in[0])+(in[1]*in[1]));
+        	disappear2 = sqrt((in2[0]*in2[0])+(in2[1]*in2[1]));
+        	disappear3 = sqrt((in3[0]*in3[0])+(in3[1]*in3[1]));
         	in[0]/=disappear;
         	in[1]/=disappear;
-        	g.bul5.vel[0] -= ((in[0]*(mass1*dark/(disappear*disappear))/10000))/mass1;
+        	in2[0]/=disappear2;
+        	in2[1]/=disappear2;
+		in3[0]/=disappear3;
+        	in3[1]/=disappear3;
+
+		g.bul5.vel[0] += ((in[0]*(mass1*dark/(disappear*disappear))/10000))/mass1;
         	g.bul5.vel[1] += ((in[1]*(mass1*dark/(disappear*disappear))/10000))/mass1;
-        	g.planet.vel[0] -= sin(in[0]*(mass1*dark/(disappear*disappear))/9000)/dark;
-        	g.planet.vel[1] += sin(in[1]*(mass1*dark/(disappear*disappear))/9000)/dark;
+        	g.blackhole.vel[0] = (in[0]*(mass1*dark/(disappear*disappear))/8000)/dark;
+        	g.blackhole.vel[1] = (in[1]*(mass1*dark/(disappear*disappear))/8000)/dark;
+		g.bul6.vel[0] += ((in2[0]*(mass2*dark/(disappear2*disappear2))/10000))/mass2;
+        	g.bul6.vel[1] += ((in2[1]*(mass2*dark/(disappear2*disappear2))/10000))/mass2;
+        	g.blackhole.vel[0] = (in2[0]*(mass2*dark/(disappear2*disappear2))/8000)/dark;
+        	g.blackhole.vel[1] = (in2[1]*(mass2*dark/(disappear2*disappear2))/8000)/dark;
+		g.bul7.vel[0] += ((in3[0]*(mass3*dark/(disappear3*disappear3))/10000))/mass3;
+        	g.bul7.vel[1] += ((in3[1]*(mass3*dark/(disappear3*disappear3))/10000))/mass3;
+        	g.blackhole.vel[0] = (in3[0]*(mass3*dark/(disappear3*disappear3))/8000)/dark;
+        	g.blackhole.vel[1] = (in3[1]*(mass3*dark/(disappear3*disappear3))/8000)/dark;
+
+
 
 //**************************************************************************
             g.planet.move();
