@@ -100,6 +100,7 @@ public:
 	bool toggle;
 	int xres, yres;
 	Circle planet, planet2, planet3;
+	Circle blackhole;
 	Circle satellite;
  	Circle orb1, orb2,orb3, bul5, bul6, bul7;
 	Circle mark1,mark2,mark3;
@@ -155,7 +156,8 @@ public:
 		planet3.init(20, 40, 600, 200, 0);//top
 		porb.init(20,20,600,100,8);
 		porb.setVel(0.03,0.01);
-	
+		srand(time(NULL));
+		blackhole.init(4,4,(rand()%1000+1),(rand()%800+1),4); 	
 
 	//-------------------------------------------------------------------
 		satellite.init(10, 6, 200, 400, 4);
@@ -905,7 +907,24 @@ void physics()
 		   printf("\nc1: %lf:", c9);
 
 	}
+		Vec in;
+		Flt disappear, mass1, mass2;
+		mass1=(4/3)*PI*(g.bul5.radius*g.bul5.radius);
+        	mass2=(4/3)*PI*(g.blackhole.radius * g.blackhole.radius);
 
+		in[0]= g.blackhole.pos[0]-g.bul5.pos[0] 
+		    = g.blackhole.pos[0]-g.bul6.pos[0] 
+		    = g.blackhole.pos[0]-g.bul7.pos[0];
+		in[1]= g.blackhole.pos[1]-g.bul5.pos[1] 
+		    = g.blackhole.pos[1]-g.bul6.pos[1] 
+		    = g.blackhole.pos[1]-g.bul7.pos[1];
+        	disappear = sqrt((in[0]*in[0])+(in[1]*in[1]));
+        	in[0]/=disappear;
+        	in[1]/=disappear;
+        	g.bul7.vel[0] -= ((in[0]*(mass1*mass2/(disappear*disappear))/10000))/m1;
+        	g.bul7.vel[1] += ((in[1]*(mass1*mass2/(disappear*disappear))/10000))/m1;
+        	g.planet.vel[0] -= sin(in[0]*(mass1*mass2/(disappear*disappear))/9000)/m2;
+        	g.planet.vel[1] += sin(in[1]*(mass1*mass2/(disappear*disappear))/9000)/m2;
 
 //**************************************************************************
             g.planet.move();
@@ -1043,6 +1062,9 @@ void render()
     	}
     	first=1;
     }
+
+//--------------------------------------------------------------------------
+	show_circle(&g.blackhole);    
 	show_circle(&g.planet2);
 	show_circle(&g.satellite);
 //--------------------------------------------------------------------------
