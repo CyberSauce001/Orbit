@@ -907,24 +907,24 @@ void physics()
 		   printf("\nc1: %lf:", c9);
 
 	}
-		Vec in;
-		Flt disappear, mass1, mass2;
+		Vec in,in2,in3;
+		Flt disappear,disaappear2,disappear3, mass1, mass2,mass3,dark;
 		mass1=(4/3)*PI*(g.bul5.radius*g.bul5.radius);
-        	mass2=(4/3)*PI*(g.blackhole.radius * g.blackhole.radius);
+        	dark=(4/3)*PI*(g.blackhole.radius * g.planet.radius);
 
-		in[0]= g.blackhole.pos[0]-g.bul5.pos[0] 
-		    = g.blackhole.pos[0]-g.bul6.pos[0] 
-		    = g.blackhole.pos[0]-g.bul7.pos[0];
-		in[1]= g.blackhole.pos[1]-g.bul5.pos[1] 
-		    = g.blackhole.pos[1]-g.bul6.pos[1] 
-		    = g.blackhole.pos[1]-g.bul7.pos[1];
+		in[0] = g.blackhole.pos[0]-g.bul5.pos[0];
+	        in2[0]= g.blackhole.pos[0]-g.bul6.pos[0];
+	        in3[0]= g.blackhole.pos[0]-g.bul7.pos[0];
+		in[1] = g.blackhole.pos[1]-g.bul5.pos[1];
+	        in2[1]= g.blackhole.pos[1]-g.bul6.pos[1];
+	        in3[1] = g.blackhole.pos[1]-g.bul7.pos[1];
         	disappear = sqrt((in[0]*in[0])+(in[1]*in[1]));
         	in[0]/=disappear;
         	in[1]/=disappear;
-        	g.bul7.vel[0] -= ((in[0]*(mass1*mass2/(disappear*disappear))/10000))/m1;
-        	g.bul7.vel[1] += ((in[1]*(mass1*mass2/(disappear*disappear))/10000))/m1;
-        	g.planet.vel[0] -= sin(in[0]*(mass1*mass2/(disappear*disappear))/9000)/m2;
-        	g.planet.vel[1] += sin(in[1]*(mass1*mass2/(disappear*disappear))/9000)/m2;
+        	g.bul5.vel[0] -= ((in[0]*(mass1*dark/(disappear*disappear))/10000))/mass1;
+        	g.bul5.vel[1] += ((in[1]*(mass1*dark/(disappear*disappear))/10000))/mass1;
+        	g.planet.vel[0] -= sin(in[0]*(mass1*dark/(disappear*disappear))/9000)/dark;
+        	g.planet.vel[1] += sin(in[1]*(mass1*dark/(disappear*disappear))/9000)/dark;
 
 //**************************************************************************
             g.planet.move();
